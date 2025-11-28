@@ -8,14 +8,14 @@ class NewsFeedScreen extends StatelessWidget {
     return ListView(
       children: const [
         NewsFeedCard(
-          userName: 'Cyrus Robles',
-          postContent: 'Kamusta',
+          userName: 'Celesse Aisle Nacpil',
+          postContent: 'walang katapusang schoolworks na para bang wag na lang mag noche buena talaga',
           numOfLikes: 100,
           date: 'November 28'
         ),
         NewsFeedCard(
-          userName: 'Kween Yasmin', 
-          postContent: 'bili na kayo ng green mango graham!!', 
+          userName: 'Celesse Aisle Nacpil', 
+          postContent: 'wala na uwian na corny na...', 
           numOfLikes: 1000,
           hasImage: true,
           date: 'November 30'

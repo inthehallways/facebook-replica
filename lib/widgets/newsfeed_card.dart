@@ -30,7 +30,10 @@ class NewsFeedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.person),
+                const CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/profile.jpg'), // Enhancement 2: Change User Profile Image
+                ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
                 ),
@@ -78,56 +81,42 @@ class NewsFeedCard extends StatelessWidget {
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
             hasImage == true
-            ? const Placeholder()
-            : SizedBox(
-              height: ScreenUtil().setHeight(1),
-            ),
-            Row (
+            ? Image.asset(
+                'assets/images/nakikisali.jpg', // Enhancement 1: Replace placeholder and Add Post Image
+                height: ScreenUtil().setHeight(350), 
+                width: double.infinity,
+                fit: BoxFit.cover,
+              )          
+            : const SizedBox(),
+            Row( // Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton.icon(
-                  onPressed: () {
-                    print('Liked');
-                  },
-                  icon: const Icon(
-                    Icons.thumb_up,
-                    color:FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: numOfLikes.toString(),
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
+                ActionButton(
+                  icon: Icons.thumb_up,
+                  label: '$numOfLikes', 
+                  color: FB_DARK_PRIMARY,
+                  onPressed: () => print("Liked"),
                 ),
-                TextButton.icon(
+                ActionButton(
+                  icon: Icons.comment,
+                  label: 'Comment',
+                  color: FB_DARK_PRIMARY,
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.comment,
-                    color: FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: 'Comment',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
                 ),
-                TextButton.icon(
+                ActionButton(
+                  icon: Icons.redo,
+                  label: 'Share',
+                  color: FB_DARK_PRIMARY,
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.redo,
-                    color: FB_DARK_PRIMARY,
-                  ),
-                  label: CustomFont(
-                    text: 'Share',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: FB_DARK_PRIMARY,
-                  ),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(Icons.person),
+                const CircleAvatar(
+                  radius: 13,
+                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+                ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
                 ),
@@ -160,6 +149,35 @@ class NewsFeedCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
+class ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const ActionButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, color: color),
+      label: CustomFont(
+        text: label,
+        fontSize: ScreenUtil().setSp(12),
+        color: color,
       ),
     );
   }
