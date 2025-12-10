@@ -7,12 +7,14 @@ class Notification extends StatelessWidget {
     super.key,
     required this.name,
     required this.post,
-    required this.description
+    required this.description,
+    required this.time
   });
 
   final String name;
   final String post;
   final String description;
+  final String time;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,6 +48,11 @@ class Notification extends StatelessWidget {
                 color: Colors.black,
                 fontStyle: FontStyle.italic,
               ),
+              CustomFont(
+                text: time,
+                fontSize: 10.sp,
+                color: Colors.grey,
+          ),
             ],
           ),
           const Spacer(),

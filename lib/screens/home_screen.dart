@@ -15,6 +15,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
+  
+  // Enhancement 2: Create a dynamic AppBar title
+  final List<String> _titles = [
+    'mukhanglibro',
+    'Notification',
+    'Messages',
+    'Profile',
+  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: FB_TEXT_COLOR_WHITE,
         elevation: 2,
         title: CustomFont(
-          text: 'facebook',
+          text: _titles[_selectedIndex], // Enhancement 4: Change the App name into your own social media application name
           fontSize: ScreenUtil().setSp(25),
           color: FB_PRIMARY,
           fontFamily: 'Klavika',
@@ -31,7 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        children: const <Widget>[NewsFeedScreen(), NotificationScreen()],
+        children: const <Widget>[
+          NewsFeedScreen(),
+          NotificationScreen(),
+          Center(child: Text("Messages")),
+          Center(child: Text("Profile")),
+        ],
         onPageChanged: (page) {
           setState((){
             _selectedIndex = page;
@@ -45,12 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          
+          // Enhancement 3: Add more BottomNavigationBarItem
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
+
         selectedItemColor: FB_PRIMARY,
+        unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,
       ),
     );

@@ -9,17 +9,36 @@ class NotificationScreen extends StatefulWidget {
   State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
+// General Enhancement: Add 10-20 Notifications with dummy data
 class _NotificationScreenState extends State<NotificationScreen> {
+  final List<Map<String, String>> notifications = List.generate(
+    10,
+    (index) => {
+      'name': 'User ${index + 1}',
+      'post': 'Title ${index + 1}',
+      'description': 'Description',
+      'time': '${index + 1}h ago'
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       width: ScreenUtil().screenWidth,
-      child: const Column(
-        children: [
-          notif.Notification(name: 'Test', post: 'Post', description: 'Description',),
-          Divider(),
-        ],
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 10.h), 
+        itemCount: notifications.length,
+        separatorBuilder: (context, index) => const Divider(),
+        itemBuilder: (context, index) {
+          final notifData = notifications[index];
+          return notif.Notification(
+            name: notifData['name']!,
+            post: notifData['post']!,
+            description: notifData['description']!,
+            time: notifData['time']!
+          );
+        },
       ),
     );
   }

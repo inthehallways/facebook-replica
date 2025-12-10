@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 
-const Color FB_PRIMARY = Color(0xFF0167f8);
-const Color FB_SECONDARY = Color(0xFF003bb3);
-const Color FB_DARK_PRIMARY = Color(0xFF021452);
-const Color FB_LIGHT_PRIMARY = Color(0xFF74b7fb);
+// Enhancement 5: Change Color Palette based on your Preference.
+const Color FB_PRIMARY = Color(0xFF59AC77);
+const Color FB_SECONDARY = Color(0xFF789461);
+const Color FB_DARK_PRIMARY = Color(0xFF4C763B);
+const Color FB_LIGHT_PRIMARY = Color(0xFFDBE7C9);
 const Color FB_TEXT_COLOR_WHITE = Color(0xFFe0f0fd);

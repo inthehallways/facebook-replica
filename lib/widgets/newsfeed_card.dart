@@ -8,7 +8,12 @@ class NewsFeedCard extends StatelessWidget {
   final String postContent;
   final String date;
   final int numOfLikes;
-  final bool hasImage;
+
+  // Enhancement 1:  Create a dynamic post with these considerations: 
+  //Assigning number of values, Assigning date in every post, Whether a post has a placeholder or none.
+  final bool hasImage; 
+  final String? profileImage;
+  final String? postImage;
   const NewsFeedCard({
     super.key,
     required this.userName,
@@ -16,6 +21,8 @@ class NewsFeedCard extends StatelessWidget {
     this.numOfLikes = 0,
     this.hasImage = false,
     required this.date,
+    this.profileImage,
+    this.postImage,
   });
 
   @override
@@ -30,9 +37,11 @@ class NewsFeedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const CircleAvatar(
+                CircleAvatar( // Changed to comply with the requirements of Enhancement 1
                   radius: 20,
-                  backgroundImage: AssetImage('assets/images/profile.jpg'), // Enhancement 2: Change User Profile Image
+                  backgroundImage: AssetImage(
+                    profileImage ?? 'assets/images/aisle_dp.jpg',
+                  ),
                 ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
@@ -81,21 +90,22 @@ class NewsFeedCard extends StatelessWidget {
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
             hasImage == true
-            ? Image.asset(
-                'assets/images/nakikisali.jpg', // Enhancement 1: Replace placeholder and Add Post Image
+            ? Image.asset( // Changed to comply with the requirements of Enhancement 1
+                postImage ?? 'assets/images/post_placeholder.png',
+                // 'assets/images/nakikisali.jpg', // Lab Act 1 Enhancement 1: Replace placeholder and Add Post Image
                 height: ScreenUtil().setHeight(350), 
                 width: double.infinity,
                 fit: BoxFit.cover,
               )          
             : const SizedBox(),
-            Row( // Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
+            Row( // Lab Act 1 Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ActionButton(
                   icon: Icons.thumb_up,
                   label: '$numOfLikes', 
                   color: FB_DARK_PRIMARY,
-                  onPressed: () => print("Liked"),
+                  onPressed: () => debugPrint("Liked"),
                 ),
                 ActionButton(
                   icon: Icons.comment,
@@ -115,7 +125,7 @@ class NewsFeedCard extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   radius: 13,
-                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+                  backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
                 ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
@@ -154,7 +164,7 @@ class NewsFeedCard extends StatelessWidget {
   }
 }
 
-// Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
+// Lab Act 1 Enhancement 3: Change Like, Comment, and Share Buttons to Widget Based
 class ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
