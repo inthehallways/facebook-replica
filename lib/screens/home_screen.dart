@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants.dart';
 import '../screens/newsfeed_screen.dart';
 import '../screens/notification_screen.dart';
+import '../screens/profile_screen.dart';
 import '../widgets/custom_font.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,12 +17,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
   
-  // Enhancement 2: Create a dynamic AppBar title
+  // Lab Act2 Enhancement 2: Create a dynamic AppBar title
   final List<String> _titles = [
     'mukhanglibro',
     'Notification',
-    'Messages',
-    'Profile',
+    'Celesse Aisle Nacpil', // Enhancement 1: Customize the profile name into your name
   ];
   
 
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: FB_TEXT_COLOR_WHITE,
         elevation: 2,
         title: CustomFont(
-          text: _titles[_selectedIndex], // Enhancement 4: Change the App name into your own social media application name
+          text: _titles[_selectedIndex], // Lab Act2 Enhancement 4: Change the App name into your own social media application name
           fontSize: ScreenUtil().setSp(25),
           color: FB_PRIMARY,
           fontFamily: 'Klavika',
@@ -43,8 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: const <Widget>[
           NewsFeedScreen(),
           NotificationScreen(),
-          Center(child: Text("Messages")),
-          Center(child: Text("Profile")),
+          ProfileScreen(),
         ],
         onPageChanged: (page) {
           setState((){
@@ -62,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
           
           // Enhancement 3: Add more BottomNavigationBarItem
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
 

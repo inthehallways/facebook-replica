@@ -73,7 +73,7 @@ class NewsFeedScreen extends StatelessWidget {
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts[index];
-        return NewsFeedCard(
+        return PostCard(
           userName: post['userName'], 
           postContent: post['postContent'],
           numOfLikes: post['numOfLikes'],

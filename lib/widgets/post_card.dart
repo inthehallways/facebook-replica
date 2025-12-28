@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants.dart';
 import 'custom_font.dart';
 
-class NewsFeedCard extends StatelessWidget {
+class PostCard extends StatelessWidget {
   final String userName;
   final String postContent;
   final String date;
@@ -14,7 +14,7 @@ class NewsFeedCard extends StatelessWidget {
   final bool hasImage; 
   final String? profileImage;
   final String? postImage;
-  const NewsFeedCard({
+  const PostCard({
     super.key,
     required this.userName,
     required this.postContent,
