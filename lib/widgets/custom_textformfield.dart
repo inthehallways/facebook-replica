@@ -9,8 +9,9 @@ class CustomTextFormField extends StatelessWidget {
     {super.key,
     required this.validator,
     required this.onSaved,
-    this.controller = TextEditingController,
+    this.controller,
     this.isObscure = false,
+    this.suffixIcon,
     required this.fontSize,
     required this.fontColor,
     this.hintTextSize = 12,
@@ -28,10 +29,11 @@ class CustomTextFormField extends StatelessWidget {
   final isObscure;
   final fontSize;
   final fontColor;
-  final double height, width;
+  final height, width;
   final hintTextSize;
   final hintText;
   final fillColor;
+  final Widget? suffixIcon;
   TextInputType keyboardType;
   int maxLength;
 
@@ -97,7 +99,8 @@ class CustomTextFormField extends StatelessWidget {
           fontFamily: 'Frutiger',
         ),
         hintText: hintText,
-        fillColor: fillColor
+        fillColor: fillColor,
+        suffixIcon: suffixIcon,
       ),
     );
   }

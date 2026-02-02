@@ -25,7 +25,11 @@ class MainApp extends StatelessWidget {
             '/login': (context) => const LoginScreen(),
             '/register': (context) => const RegisterScreen(),
             '/newsfeed': (context) => const NewsFeedScreen(),
-            '/home': (context) => const HomeScreen(),
+            '/home': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              final username = args['username'] as String;
+              return HomeScreen(username: username);
+            },
           },
         );
       },

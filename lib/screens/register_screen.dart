@@ -4,7 +4,34 @@ import 'package:nacpil_mobprog/constants.dart';
 import 'package:nacpil_mobprog/widgets/custom_font.dart';
 import 'package:nacpil_mobprog/widgets/custom_inkwell_button.dart';
 import 'package:nacpil_mobprog/widgets/custom_textformfield.dart';
-import '../widgets/custom_dialogs.dart';
+
+Widget errorDialog(BuildContext context, String message) {
+  return AlertDialog(
+    title: Text('Error'),
+    content: Text(message),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text('OK'),
+      ),
+    ],
+  );
+}
+
+Widget successDialog(BuildContext context, String message, VoidCallback onOk) {
+  return AlertDialog(
+    title: Text('Success'),
+    content: Text(message),
+    actions: [
+      TextButton(
+        onPressed: onOk,
+        child: Text('OK'),
+      ),
+    ],
+  );
+}
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,15 +41,120 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool _isPasswordHidden = true;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController(); 
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
 
+  // enhancement 2: create your own validation
   void register () {
-    // TODO: create your own validation
+    if (firstNameController.text.isEmpty || 
+        lastNameController.text.isEmpty ||
+        mobilenumController.text.isEmpty ||
+        usernameController.text.isEmpty || 
+        passwordController.text.isEmpty ||
+        confirmpasswordController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'All fields are required to continue.',
+        ),
+      );
+      return;
+    }
+
+    if (passwordController.text.length < 8) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Password must be at least 8 characters long.',
+        ),
+      );
+      return;
+    }
+
+    if (!passwordController.text.contains(RegExp(r'[A-Z]'))) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Password must contain at least one uppercase letter.',
+        ),
+      );
+      return;
+    }
+
+    if (!passwordController.text.contains(RegExp(r'[a-z]'))) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Password must contain at least one lowercase letter.',
+        ),
+      );
+      return;
+    }
+
+    if (!passwordController.text.contains(RegExp(r'[0-9]'))) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Password must contain at least one number.',
+        ),
+      );
+      return;
+    }
+
+    if (!passwordController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Password must contain at least one special character.',
+        ),
+      );
+      return;
+    }
+
+    if (mobilenumController.text.length < 11 || mobilenumController.text.length > 11) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Mobile number must be 11 digits long.',
+        ),
+      );
+      return;
+    }
+
+    if (passwordController.text != confirmpasswordController.text) {
+      showDialog(
+        context: context,
+        builder: (_) => errorDialog(
+          context,
+          'Passwords do not match.',
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (_) => successDialog(
+        context,
+        'Registration Succesful!',
+        () {
+          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, '/login');
+        },
+      ),
+    );
   }
 
   @override
@@ -97,7 +229,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: ScreenUtil().setHeight(10),
               ),
               CustomTextFormField(
-                isObscure: true,
+                height: ScreenUtil().setHeight(10),
+                width: ScreenUtil().setWidth(10),
+                onSaved: null,
+                fontColor: null,
+                hintText: 'Username',
+                validator: (value) => null,
+                hintTextSize: ScreenUtil().setSp(15),
+                fontSize: ScreenUtil().setSp(15),
+                controller: usernameController,
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              CustomTextFormField(
+                isObscure: _isPasswordHidden,
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
                 onSaved: null,
@@ -107,6 +253,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintTextSize: ScreenUtil().setSp(15),
                 fontSize: ScreenUtil().setSp(15),
                 controller: passwordController,
+                suffixIcon: IconButton( // enhancement 1: show/hide password
+                  icon: Icon(
+                    _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordHidden = !_isPasswordHidden;
+                    });
+                  },
+                ),
               ),
               SizedBox(
                 height: ScreenUtil().setHeight(10),
@@ -122,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: ScreenUtil().setHeight(10),
               ),
               CustomTextFormField(
-                isObscure: true,
+                isObscure: _isPasswordHidden,
                 hintText: 'Confirm Password',
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
@@ -132,6 +288,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintTextSize: ScreenUtil().setSp(15),
                 fontSize: ScreenUtil().setSp(15),
                 controller: confirmpasswordController,
+                suffixIcon: IconButton( // enhancement 1: show/hide password
+                  icon: Icon(
+                    _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordHidden = !_isPasswordHidden;
+                    });
+                  },
+                ),
               ),
               const Spacer(),
               Row(

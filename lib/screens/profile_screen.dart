@@ -14,10 +14,32 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-    // Enhancement 3: Reuse the formerly known newsfeed_card to recreate wall post or profile post
-    final List<Map<String, dynamic>> posts = const [ 
+  List<Map<String, dynamic>> myPosts(
+    List<Map<String, dynamic>> posts,
+    String username,) {
+    return posts.where((post) => post['userName'] == username).toList();
+  }
+
+    final List<String> photos = [
+    'assets/images/nakikisali.jpg',
+    'assets/images/me.png',
+    'assets/images/pogi.jpg',
+    'assets/images/lewls.jpg',
+    'assets/images/webcamtoy.jpg',
+    'assets/images/463.png',
+    ];
+
+  @override
+  Widget build(BuildContext context) {
+    // enhancement 3: profile name will change depending on the username after login 
+    final args = 
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+
+    final String username= args?['username'] ?? 'User';
+
+    final List<Map<String, dynamic>> posts = [ 
         {
-        'userName': 'Celesse Aisle Nacpil',
+        'userName': username,
         'postContent': 'walang katapusang schoolworks na para bang wag na lang mag noche buena talaga',
         'numOfLikes': 100,
         'date': 'Nov 28',
@@ -34,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'postImage': 'assets/images/join-aws.png',
         },
         {
-        'userName': 'Celesse Aisle Nacpil',
+        'userName': username,
         'postContent': 'wala na uwian na corny na...',
         'numOfLikes': 1000,
         'date': 'Nov 30',
@@ -42,25 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'profileImage': 'assets/images/aisle_dp.jpg',
         'postImage': 'assets/images/nakikisali.jpg',
         },
-  ];
-
-  List<Map<String, dynamic>> get myPosts {
-    return posts
-        .where((post) => post['userName'] == 'Celesse Aisle Nacpil')
-        .toList();
-    } // End of Enhancement 3
-
-    final List<String> photos = [
-    'assets/images/nakikisali.jpg',
-    'assets/images/me.png',
-    'assets/images/pogi.jpg',
-    'assets/images/lewls.jpg',
-    'assets/images/webcamtoy.jpg',
-    'assets/images/463.png',
     ];
 
-  @override
-  Widget build(BuildContext context) {
+    final userPosts = myPosts(posts, username);
+
     return DefaultTabController(
         length: 3,
         child: Container(
@@ -118,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                     CustomFont(
-                                        text: 'Celesse Aisle Nacpil', // Enhancement 1: Customize the profile name into your name
+                                        text: username, 
                                         fontWeight: FontWeight.bold,
                                         fontSize: ScreenUtil().setSp(20),
                                         color: Colors.black,
@@ -214,9 +221,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ListView.builder(
                                         shrinkWrap: true,
                                         physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: myPosts.length,
+                                        itemCount: userPosts.length,
                                         itemBuilder: (context, index) {
-                                            final post = myPosts[index];
+                                            final post = userPosts[index];
                                             return PostCard(
                                             userName: post['userName'],
                                             postContent: post['postContent'],

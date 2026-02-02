@@ -4,6 +4,20 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../widgets/custom_inkwell_button.dart';
 
+Widget errorDialog(BuildContext context, String message) {
+  return AlertDialog(
+    title: Text('Error'),
+    content: Text(message),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text('OK'),
+      ),
+    ],
+  );
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +27,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isPasswordHidden = true;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -66,23 +81,45 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: ScreenUtil().setHeight(10),
                         width: ScreenUtil().setWidth(10),
                         controller: passwordController,
-                        isObscure: true,
+                        isObscure: _isPasswordHidden,
                         validator: (value) =>
                           value!.isEmpty ? 'Enter your password' : null,
                         onSaved: (value) => passwordController = value!,
                         fontSize: ScreenUtil().setSp(15),
                         fontColor: FB_DARK_PRIMARY,
                         hintTextSize: ScreenUtil().setSp(15),
-                        hintText: 'Password'
+                        hintText: 'Password',
+                        suffixIcon: IconButton( // enhancement 1: show/hide password
+                          icon: Icon(
+                            _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordHidden = !_isPasswordHidden;
+                            });
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: ScreenUtil().setHeight(50)
                       ),
                       CustomInkwellButton(
                         onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
+                          if(usernameController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (_) => errorDialog(
+                                context,
+                                'Username and Password are required.',
+                              ),
+                            );
+                            return;
                           }
+                          Navigator.pushReplacementNamed(
+                            context, '/home',
+                            arguments: {'username': usernameController.text}, // passing username to home screen
+                          );
                         },
                         height: ScreenUtil().setHeight(40),
                         width: ScreenUtil().screenWidth,

@@ -7,7 +7,8 @@ import '../screens/profile_screen.dart';
 import '../widgets/custom_font.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String username;
+  const HomeScreen({super.key, required this.username});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,14 +17,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
-  
-  // Lab Act2 Enhancement 2: Create a dynamic AppBar title
-  final List<String> _titles = [
+
+  late List<String> _titles;
+  @override
+  void initState() {
+    super.initState();
+    _titles = [
     'mukhanglibro',
     'Notification',
-    'Celesse Aisle Nacpil', // Enhancement 1: Customize the profile name into your name
-  ];
-  
+    widget.username, 
+    ];
+  } 
 
   @override
   Widget build(BuildContext context) {
